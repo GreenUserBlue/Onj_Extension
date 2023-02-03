@@ -64,21 +64,28 @@
 //abc: 3 rnd()
 //import "./shit/"
 
-OnjFile ::= (item_ | WHITE_SPACE?)
+OnjFile ::= (topLevel)
+whi::=WHITE_SPACE?
+topLevel::= (((variable | use | import)  topLevel?) | (pair (SEPARATOR topLevel)?) | (whi))
+//topLevel::= (variable)
 
+variable ::= "var" whi NAME_CHARACTER whi "=" whi elem_no_pair whi SEMIQOLON
+use ::= "use" whi NAME_CHARACTER whi SEMIQOLON
+import ::= "import" whi STRING_VALUE whi "as" whi NAME_CHARACTER whi SEMIQOLON
 
-private item_ ::= (WHITE_SPACE? elem WHITE_SPACE? (((SEPARATOR item_))|(SEPARATOR?)))
-private item_no_pair_ ::= (WHITE_SPACE? elem_no_pair WHITE_SPACE?)
+//private item_ ::= (whi elem whi (((SEPARATOR item_))|(SEPARATOR?)))
+//elem ::= ( primitive | pair| STRING_VALUE | array | object) whi
 
-pair ::=  WHITE_SPACE? (NAME_CHARACTER | STRING_VALUE) WHITE_SPACE? ASSIGN WHITE_SPACE? item_no_pair_
+private item_no_pair_ ::= (whi elem_no_pair whi)
 
-elem ::= ( primitive | pair| STRING_VALUE | array | object) WHITE_SPACE?
-elem_no_pair ::= ( primitive | STRING_VALUE | array | object) WHITE_SPACE?
+pair ::=  whi (NAME_CHARACTER | STRING_VALUE) whi ASSIGN whi item_no_pair_
 
-primitive ::= WHITE_SPACE? (bool | float | integer | "null")
+elem_no_pair ::= ( primitive | STRING_VALUE | array | object) whi
+
+primitive ::= whi (bool | float | integer | "null")
 bool ::= ("true"|"false")
 digit ::= ("0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"|"9")
 integer ::= (digit "_"* integer|(digit))
 float ::= ((integer "." integer) | ("." integer))
-array ::= '['  WHITE_SPACE? ( item_no_pair_ WHITE_SPACE?  (((SEPARATOR item_no_pair_)+)|(SEPARATOR?)))?  WHITE_SPACE? ']'
-object ::= '{'  WHITE_SPACE? ( pair WHITE_SPACE? (((SEPARATOR pair)+)|(SEPARATOR?)) )?  WHITE_SPACE? '}'
+array ::= '['  whi ( item_no_pair_ whi  (((SEPARATOR item_no_pair_)+)|(SEPARATOR?)))?  whi ']'
+object ::= '{'  whi ( pair whi (((SEPARATOR pair)+)|(SEPARATOR?)) )?  whi '}'
