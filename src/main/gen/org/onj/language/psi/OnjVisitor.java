@@ -7,6 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public class OnjVisitor extends PsiElementVisitor {
 
+  public void visitArray(@NotNull OnjArray o) {
+    visitPsiElement(o);
+  }
+
   public void visitBool(@NotNull OnjBool o) {
     visitPsiElement(o);
   }
@@ -28,6 +32,10 @@ public class OnjVisitor extends PsiElementVisitor {
   }
 
   public void visitInteger(@NotNull OnjInteger o) {
+    visitPsiElement(o);
+  }
+
+  public void visitObject(@NotNull OnjObject o) {
     visitPsiElement(o);
   }
 

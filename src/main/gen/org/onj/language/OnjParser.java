@@ -55,6 +55,105 @@ public class OnjParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // '['  WHITE_SPACE? ( item_no_pair_ WHITE_SPACE?  (((SEPARATOR item_no_pair_)+)|(SEPARATOR?)))?  WHITE_SPACE? ']'
+  public static boolean array(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "array")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, ARRAY, "<array>");
+    r = consumeToken(b, "[");
+    r = r && array_1(b, l + 1);
+    r = r && array_2(b, l + 1);
+    r = r && array_3(b, l + 1);
+    r = r && consumeToken(b, "]");
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // WHITE_SPACE?
+  private static boolean array_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "array_1")) return false;
+    consumeToken(b, WHITE_SPACE);
+    return true;
+  }
+
+  // ( item_no_pair_ WHITE_SPACE?  (((SEPARATOR item_no_pair_)+)|(SEPARATOR?)))?
+  private static boolean array_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "array_2")) return false;
+    array_2_0(b, l + 1);
+    return true;
+  }
+
+  // item_no_pair_ WHITE_SPACE?  (((SEPARATOR item_no_pair_)+)|(SEPARATOR?))
+  private static boolean array_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "array_2_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = item_no_pair_(b, l + 1);
+    r = r && array_2_0_1(b, l + 1);
+    r = r && array_2_0_2(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // WHITE_SPACE?
+  private static boolean array_2_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "array_2_0_1")) return false;
+    consumeToken(b, WHITE_SPACE);
+    return true;
+  }
+
+  // ((SEPARATOR item_no_pair_)+)|(SEPARATOR?)
+  private static boolean array_2_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "array_2_0_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = array_2_0_2_0(b, l + 1);
+    if (!r) r = array_2_0_2_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (SEPARATOR item_no_pair_)+
+  private static boolean array_2_0_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "array_2_0_2_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = array_2_0_2_0_0(b, l + 1);
+    while (r) {
+      int c = current_position_(b);
+      if (!array_2_0_2_0_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "array_2_0_2_0", c)) break;
+    }
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // SEPARATOR item_no_pair_
+  private static boolean array_2_0_2_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "array_2_0_2_0_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SEPARATOR);
+    r = r && item_no_pair_(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // SEPARATOR?
+  private static boolean array_2_0_2_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "array_2_0_2_1")) return false;
+    consumeToken(b, SEPARATOR);
+    return true;
+  }
+
+  // WHITE_SPACE?
+  private static boolean array_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "array_3")) return false;
+    consumeToken(b, WHITE_SPACE);
+    return true;
+  }
+
+  /* ********************************************************** */
   // "true"|"false"
   public static boolean bool(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "bool")) return false;
@@ -87,7 +186,7 @@ public class OnjParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ( primitive | pair| STRING_VALUE) WHITE_SPACE?
+  // ( primitive | pair| STRING_VALUE | array | object) WHITE_SPACE?
   public static boolean elem(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "elem")) return false;
     boolean r;
@@ -98,13 +197,15 @@ public class OnjParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // primitive | pair| STRING_VALUE
+  // primitive | pair| STRING_VALUE | array | object
   private static boolean elem_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "elem_0")) return false;
     boolean r;
     r = primitive(b, l + 1);
     if (!r) r = pair(b, l + 1);
     if (!r) r = consumeToken(b, STRING_VALUE);
+    if (!r) r = array(b, l + 1);
+    if (!r) r = object(b, l + 1);
     return r;
   }
 
@@ -116,7 +217,7 @@ public class OnjParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ( primitive | STRING_VALUE) WHITE_SPACE?
+  // ( primitive | STRING_VALUE | array | object) WHITE_SPACE?
   public static boolean elem_no_pair(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "elem_no_pair")) return false;
     boolean r;
@@ -127,12 +228,14 @@ public class OnjParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // primitive | STRING_VALUE
+  // primitive | STRING_VALUE | array | object
   private static boolean elem_no_pair_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "elem_no_pair_0")) return false;
     boolean r;
     r = primitive(b, l + 1);
     if (!r) r = consumeToken(b, STRING_VALUE);
+    if (!r) r = array(b, l + 1);
+    if (!r) r = object(b, l + 1);
     return r;
   }
 
@@ -179,7 +282,7 @@ public class OnjParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // digit integer|(digit)
+  // digit "_"* integer|(digit)
   public static boolean integer(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "integer")) return false;
     boolean r;
@@ -190,15 +293,27 @@ public class OnjParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // digit integer
+  // digit "_"* integer
   private static boolean integer_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "integer_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = digit(b, l + 1);
+    r = r && integer_0_1(b, l + 1);
     r = r && integer(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // "_"*
+  private static boolean integer_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "integer_0_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!consumeToken(b, "_")) break;
+      if (!empty_element_parsed_guard_(b, "integer_0_1", c)) break;
+    }
+    return true;
   }
 
   // (digit)
@@ -291,6 +406,105 @@ public class OnjParser implements PsiParser, LightPsiParser {
   // WHITE_SPACE?
   private static boolean item_no_pair__2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_no_pair__2")) return false;
+    consumeToken(b, WHITE_SPACE);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // '{'  WHITE_SPACE? ( pair WHITE_SPACE? (((SEPARATOR pair)+)|(SEPARATOR?)) )?  WHITE_SPACE? '}'
+  public static boolean object(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "object")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, OBJECT, "<object>");
+    r = consumeToken(b, "{");
+    r = r && object_1(b, l + 1);
+    r = r && object_2(b, l + 1);
+    r = r && object_3(b, l + 1);
+    r = r && consumeToken(b, "}");
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // WHITE_SPACE?
+  private static boolean object_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "object_1")) return false;
+    consumeToken(b, WHITE_SPACE);
+    return true;
+  }
+
+  // ( pair WHITE_SPACE? (((SEPARATOR pair)+)|(SEPARATOR?)) )?
+  private static boolean object_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "object_2")) return false;
+    object_2_0(b, l + 1);
+    return true;
+  }
+
+  // pair WHITE_SPACE? (((SEPARATOR pair)+)|(SEPARATOR?))
+  private static boolean object_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "object_2_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = pair(b, l + 1);
+    r = r && object_2_0_1(b, l + 1);
+    r = r && object_2_0_2(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // WHITE_SPACE?
+  private static boolean object_2_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "object_2_0_1")) return false;
+    consumeToken(b, WHITE_SPACE);
+    return true;
+  }
+
+  // ((SEPARATOR pair)+)|(SEPARATOR?)
+  private static boolean object_2_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "object_2_0_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = object_2_0_2_0(b, l + 1);
+    if (!r) r = object_2_0_2_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (SEPARATOR pair)+
+  private static boolean object_2_0_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "object_2_0_2_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = object_2_0_2_0_0(b, l + 1);
+    while (r) {
+      int c = current_position_(b);
+      if (!object_2_0_2_0_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "object_2_0_2_0", c)) break;
+    }
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // SEPARATOR pair
+  private static boolean object_2_0_2_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "object_2_0_2_0_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SEPARATOR);
+    r = r && pair(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // SEPARATOR?
+  private static boolean object_2_0_2_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "object_2_0_2_1")) return false;
+    consumeToken(b, SEPARATOR);
+    return true;
+  }
+
+  // WHITE_SPACE?
+  private static boolean object_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "object_3")) return false;
     consumeToken(b, WHITE_SPACE);
     return true;
   }

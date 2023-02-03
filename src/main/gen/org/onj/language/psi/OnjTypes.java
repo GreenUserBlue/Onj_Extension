@@ -8,12 +8,14 @@ import org.onj.language.psi.impl.*;
 
 public interface OnjTypes {
 
+  IElementType ARRAY = new OnjElementType("ARRAY");
   IElementType BOOL = new OnjElementType("BOOL");
   IElementType DIGIT = new OnjElementType("DIGIT");
   IElementType ELEM = new OnjElementType("ELEM");
   IElementType ELEM_NO_PAIR = new OnjElementType("ELEM_NO_PAIR");
   IElementType FLOAT = new OnjElementType("FLOAT");
   IElementType INTEGER = new OnjElementType("INTEGER");
+  IElementType OBJECT = new OnjElementType("OBJECT");
   IElementType PAIR = new OnjElementType("PAIR");
   IElementType PRIMITIVE = new OnjElementType("PRIMITIVE");
 
@@ -26,7 +28,10 @@ public interface OnjTypes {
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-      if (type == BOOL) {
+      if (type == ARRAY) {
+        return new OnjArrayImpl(node);
+      }
+      else if (type == BOOL) {
         return new OnjBoolImpl(node);
       }
       else if (type == DIGIT) {
@@ -43,6 +48,9 @@ public interface OnjTypes {
       }
       else if (type == INTEGER) {
         return new OnjIntegerImpl(node);
+      }
+      else if (type == OBJECT) {
+        return new OnjObjectImpl(node);
       }
       else if (type == PAIR) {
         return new OnjPairImpl(node);

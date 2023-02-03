@@ -29,6 +29,18 @@ public class OnjElemImpl extends ASTWrapperPsiElement implements OnjElem {
 
   @Override
   @Nullable
+  public OnjArray getArray() {
+    return findChildByClass(OnjArray.class);
+  }
+
+  @Override
+  @Nullable
+  public OnjObject getObject() {
+    return findChildByClass(OnjObject.class);
+  }
+
+  @Override
+  @Nullable
   public OnjPair getPair() {
     return findChildByClass(OnjPair.class);
   }

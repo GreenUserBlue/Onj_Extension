@@ -52,19 +52,33 @@
 //<array> ::= '[' ( <elem> ( ',' <elem>)* | ) ']'
 //<object> ::= '[' ( <pair> ( ',' <pair>)* | ) ']'
 
+//var x="darkmode"
 
+//0x 0o 0b    hex, oct, binär, nur ganzzahlig
+// rechnungen bei import und ...(function()) mit klammer, sonst ohne
+// use abcdefg;
+// function ist teil einer Rechnung
+// infix functionen sind shit
+//
+
+//abc: 3 rnd()
+//import "./shit/"
 
 OnjFile ::= (item_ | WHITE_SPACE?)
+
+
 private item_ ::= (WHITE_SPACE? elem WHITE_SPACE? (((SEPARATOR item_))|(SEPARATOR?)))
 private item_no_pair_ ::= (WHITE_SPACE? elem_no_pair WHITE_SPACE?)
 
-pair ::= (NAME_CHARACTER | STRING_VALUE) WHITE_SPACE? ASSIGN WHITE_SPACE? item_no_pair_
+pair ::=  WHITE_SPACE? (NAME_CHARACTER | STRING_VALUE) WHITE_SPACE? ASSIGN WHITE_SPACE? item_no_pair_
 
-elem ::= ( primitive | pair| STRING_VALUE) WHITE_SPACE?
-elem_no_pair ::= ( primitive | STRING_VALUE) WHITE_SPACE?
+elem ::= ( primitive | pair| STRING_VALUE | array | object) WHITE_SPACE?
+elem_no_pair ::= ( primitive | STRING_VALUE | array | object) WHITE_SPACE?
 
 primitive ::= WHITE_SPACE? (bool | float | integer | "null")
 bool ::= ("true"|"false")
 digit ::= ("0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"|"9")
-integer ::= (digit integer|(digit))
+integer ::= (digit "_"* integer|(digit))
 float ::= ((integer "." integer) | ("." integer))
+array ::= '['  WHITE_SPACE? ( item_no_pair_ WHITE_SPACE?  (((SEPARATOR item_no_pair_)+)|(SEPARATOR?)))?  WHITE_SPACE? ']'
+object ::= '{'  WHITE_SPACE? ( pair WHITE_SPACE? (((SEPARATOR pair)+)|(SEPARATOR?)) )?  WHITE_SPACE? '}'
