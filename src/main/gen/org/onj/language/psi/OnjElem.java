@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface OnjElem extends PsiElement {
 
   @Nullable
+  OnjPair getPair();
+
+  @Nullable
   OnjPrimitive getPrimitive();
 
 }

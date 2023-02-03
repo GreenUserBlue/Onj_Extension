@@ -19,11 +19,19 @@ public class OnjVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitElemNoPair(@NotNull OnjElemNoPair o) {
+    visitPsiElement(o);
+  }
+
   public void visitFloat(@NotNull OnjFloat o) {
     visitPsiElement(o);
   }
 
   public void visitInteger(@NotNull OnjInteger o) {
+    visitPsiElement(o);
+  }
+
+  public void visitPair(@NotNull OnjPair o) {
     visitPsiElement(o);
   }
 

@@ -87,7 +87,7 @@ public class OnjParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ( primitive | STRING_VALUE ) WHITE_SPACE?
+  // ( primitive | pair| STRING_VALUE) WHITE_SPACE?
   public static boolean elem(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "elem")) return false;
     boolean r;
@@ -98,11 +98,12 @@ public class OnjParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // primitive | STRING_VALUE
+  // primitive | pair| STRING_VALUE
   private static boolean elem_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "elem_0")) return false;
     boolean r;
     r = primitive(b, l + 1);
+    if (!r) r = pair(b, l + 1);
     if (!r) r = consumeToken(b, STRING_VALUE);
     return r;
   }
@@ -110,6 +111,34 @@ public class OnjParser implements PsiParser, LightPsiParser {
   // WHITE_SPACE?
   private static boolean elem_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "elem_1")) return false;
+    consumeToken(b, WHITE_SPACE);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // ( primitive | STRING_VALUE) WHITE_SPACE?
+  public static boolean elem_no_pair(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "elem_no_pair")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, ELEM_NO_PAIR, "<elem no pair>");
+    r = elem_no_pair_0(b, l + 1);
+    r = r && elem_no_pair_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // primitive | STRING_VALUE
+  private static boolean elem_no_pair_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "elem_no_pair_0")) return false;
+    boolean r;
+    r = primitive(b, l + 1);
+    if (!r) r = consumeToken(b, STRING_VALUE);
+    return r;
+  }
+
+  // WHITE_SPACE?
+  private static boolean elem_no_pair_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "elem_no_pair_1")) return false;
     consumeToken(b, WHITE_SPACE);
     return true;
   }
@@ -236,6 +265,72 @@ public class OnjParser implements PsiParser, LightPsiParser {
   private static boolean item__3_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item__3_1")) return false;
     consumeToken(b, SEPARATOR);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // WHITE_SPACE? elem_no_pair WHITE_SPACE?
+  static boolean item_no_pair_(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "item_no_pair_")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = item_no_pair__0(b, l + 1);
+    r = r && elem_no_pair(b, l + 1);
+    r = r && item_no_pair__2(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // WHITE_SPACE?
+  private static boolean item_no_pair__0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "item_no_pair__0")) return false;
+    consumeToken(b, WHITE_SPACE);
+    return true;
+  }
+
+  // WHITE_SPACE?
+  private static boolean item_no_pair__2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "item_no_pair__2")) return false;
+    consumeToken(b, WHITE_SPACE);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // (NAME_CHARACTER | STRING_VALUE) WHITE_SPACE? ASSIGN WHITE_SPACE? item_no_pair_
+  public static boolean pair(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "pair")) return false;
+    if (!nextTokenIs(b, "<pair>", NAME_CHARACTER, STRING_VALUE)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, PAIR, "<pair>");
+    r = pair_0(b, l + 1);
+    r = r && pair_1(b, l + 1);
+    r = r && consumeToken(b, ASSIGN);
+    r = r && pair_3(b, l + 1);
+    r = r && item_no_pair_(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // NAME_CHARACTER | STRING_VALUE
+  private static boolean pair_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "pair_0")) return false;
+    boolean r;
+    r = consumeToken(b, NAME_CHARACTER);
+    if (!r) r = consumeToken(b, STRING_VALUE);
+    return r;
+  }
+
+  // WHITE_SPACE?
+  private static boolean pair_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "pair_1")) return false;
+    consumeToken(b, WHITE_SPACE);
+    return true;
+  }
+
+  // WHITE_SPACE?
+  private static boolean pair_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "pair_3")) return false;
+    consumeToken(b, WHITE_SPACE);
     return true;
   }
 
