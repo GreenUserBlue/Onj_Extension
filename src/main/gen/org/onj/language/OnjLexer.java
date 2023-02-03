@@ -55,8 +55,8 @@ public class OnjLexer implements FlexLexer {
 
   /* The ZZ_CMAP_A table has 320 entries */
   static final char ZZ_CMAP_A[] = zzUnpackCMap(
-    "\11\0\5\1\22\0\1\1\1\0\1\3\11\0\1\2\33\0\1\4\30\0\1\5\12\0\1\6\2\0\1\7\25"+
-    "\0\1\1\242\0\2\1\26\0");
+    "\1\0\1\5\7\0\5\1\22\0\1\1\1\0\1\4\4\0\1\4\4\0\1\3\57\0\1\2\50\0\1\1\242\0"+
+    "\2\1\26\0");
 
   /** 
    * Translates DFA states to action switch labels.
@@ -64,10 +64,10 @@ public class OnjLexer implements FlexLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\1\0\1\1\1\2\1\3\1\1\5\0\1\4";
+    "\1\0\1\1\1\2\1\3\1\1\2\0\2\4";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[11];
+    int [] result = new int[9];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -92,11 +92,11 @@ public class OnjLexer implements FlexLexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\10\0\20\0\10\0\30\0\40\0\50\0\60"+
-    "\0\70\0\100\0\10";
+    "\0\0\0\6\0\14\0\6\0\22\0\22\0\30\0\6"+
+    "\0\22";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[11];
+    int [] result = new int[9];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -119,12 +119,12 @@ public class OnjLexer implements FlexLexer {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\2\1\3\1\4\1\5\4\2\11\0\1\3\12\0"+
-    "\1\6\10\0\1\7\10\0\1\10\7\0\1\11\10\0"+
-    "\1\12\3\0\1\13\4\0";
+    "\1\2\1\3\1\2\1\4\1\5\1\2\7\0\1\3"+
+    "\4\0\2\6\1\7\2\6\1\10\2\6\1\7\2\6"+
+    "\1\11";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[72];
+    int [] result = new int[30];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -162,10 +162,10 @@ public class OnjLexer implements FlexLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\1\11\1\1\1\11\1\1\5\0\1\11";
+    "\1\0\1\11\1\1\1\11\1\1\2\0\1\11\1\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[11];
+    int [] result = new int[9];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;

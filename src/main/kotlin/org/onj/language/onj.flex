@@ -26,7 +26,7 @@ SEPARATOR=[,]
 ASSIGN=[:]
 //KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
 NAME_CHARACTER=\p{L}\w*
-STRING_VALUE="\"Hallo\""
+STRING_VALUE=([\"\'])(\\.|[^\1])*?\1
 
 %state WAITING_VALUE
 

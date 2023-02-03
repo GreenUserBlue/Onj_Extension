@@ -42,7 +42,7 @@ public class OnjParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // "true" | "false"
+  // "true"|"false"
   public static boolean bool(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "bool")) return false;
     boolean r;
@@ -54,7 +54,7 @@ public class OnjParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // 0|1|2|3|4|5|6|7|8|9
+  // "0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"|"9"
   public static boolean digit(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "digit")) return false;
     boolean r;
@@ -137,24 +137,34 @@ public class OnjParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // digit | (digit integer)
+  // digit integer|(digit)
   public static boolean integer(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "integer")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, INTEGER, "<integer>");
-    r = digit(b, l + 1);
+    r = integer_0(b, l + 1);
     if (!r) r = integer_1(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
   // digit integer
+  private static boolean integer_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "integer_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = digit(b, l + 1);
+    r = r && integer(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (digit)
   private static boolean integer_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "integer_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = digit(b, l + 1);
-    r = r && integer(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -217,7 +227,7 @@ public class OnjParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // WHITE_SPACE? (bool | integer | float | "null")
+  // WHITE_SPACE? (bool | float | integer | "null")
   public static boolean primitive(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "primitive")) return false;
     boolean r;
@@ -235,13 +245,13 @@ public class OnjParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // bool | integer | float | "null"
+  // bool | float | integer | "null"
   private static boolean primitive_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "primitive_1")) return false;
     boolean r;
     r = bool(b, l + 1);
-    if (!r) r = integer(b, l + 1);
     if (!r) r = float_$(b, l + 1);
+    if (!r) r = integer(b, l + 1);
     if (!r) r = consumeToken(b, "null");
     return r;
   }
