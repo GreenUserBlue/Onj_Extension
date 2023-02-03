@@ -1,0 +1,69 @@
+{
+  parserClass="org.onj.language.OnjParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Onj"
+  psiImplClassSuffix="Impl"
+  psiPackage="org.onj.language.psi"
+  psiImplPackage="org.onj.language.psi.impl"
+
+  elementTypeHolderClass="org.onj.language.psi.OnjTypes"
+  elementTypeClass="org.onj.language.psi.OnjElementType"
+  tokenTypeClass="org.onj.language.psi.OnjTokenType"
+}
+
+//<digit> ::= 0|1|2|3|4|5|6|7|8|9
+//<integer> ::= <digit> | <digit><integer>
+//<float> ::= <integer> "." <integer> | "." <integer>
+
+
+//OnjFile ::= item_*
+//
+//private item_ ::= (property|COMMENT|CRLF)
+//
+//property ::= (KEY? SEPARATOR VALUE?) | KEY
+
+// (elem ( ',' elem)*) | WHITE_SPACE | BLOCK_COMMENT | COMMENT
+
+//OnjFile ::= item_*
+//
+//private item_ ::= <pair> | WHITE_SPACE
+//
+//
+//<any>   ::= "."
+//<stringEsc> ::= "\\" <any>
+//<MyText>::= ""
+//
+//namedKeys ::=  '"' *(<stringEsc> | <any>) '"' | "'" *(<any>) "'" | <MyText>
+//
+//
+//<elem> ::= WHITE_SPACE (<array> | <object> |   elem | <pair> | <primitive>)
+//
+//
+//<primitive> ::= <bool> | <integer> | <float> | <MyText> | "null"
+//<bool> ::= "true" | "false"
+//<digit> ::= 0|1|2|3|4|5|6|7|8|9
+//<integer> ::= <digit> | <digit><integer>
+//<float> ::= <integer> "." <integer> | "." <integer>
+//<pair> ::= namedKeys SEPARATOR <elem>
+//
+//
+//<array> ::= '[' ( <elem> ( ',' <elem>)* | ) ']'
+//<object> ::= '[' ( <pair> ( ',' <pair>)* | ) ']'
+
+
+
+// ([\"\'])(\\.|[^\1])*?\1
+OnjFile ::= item_
+private item_ ::= (WHITE_SPACE? elem WHITE_SPACE? (SEPARATOR item_?)*)
+
+//pair ::= (NAME_CHARACTER | STRING_VALUE) WHITE_SPACE? ASSIGN WHITE_SPACE? item_
+
+elem ::= ( primitive | STRING_VALUE) WHITE_SPACE?
+
+primitive ::= WHITE_SPACE? (bool | integer | float | "null")
+bool ::= "true" | "false"
+digit ::= 0|1|2|3|4|5|6|7|8|9
+integer ::= (digit | (digit integer))
+float ::= ((integer "." integer) | ("." integer))
