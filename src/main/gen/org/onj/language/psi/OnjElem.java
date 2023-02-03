@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface OnjElem extends PsiElement {
 
-  @NotNull
+  @Nullable
   OnjPrimitive getPrimitive();
 
 }

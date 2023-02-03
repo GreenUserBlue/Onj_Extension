@@ -87,7 +87,7 @@ public class OnjParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ( primitive ) WHITE_SPACE?
+  // ( primitive | STRING_VALUE ) WHITE_SPACE?
   public static boolean elem(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "elem")) return false;
     boolean r;
@@ -98,13 +98,12 @@ public class OnjParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ( primitive )
+  // primitive | STRING_VALUE
   private static boolean elem_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "elem_0")) return false;
     boolean r;
-    Marker m = enter_section_(b);
     r = primitive(b, l + 1);
-    exit_section_(b, m, null, r);
+    if (!r) r = consumeToken(b, STRING_VALUE);
     return r;
   }
 

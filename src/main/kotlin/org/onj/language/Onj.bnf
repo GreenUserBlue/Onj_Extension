@@ -60,7 +60,7 @@ private item_ ::= (WHITE_SPACE? elem WHITE_SPACE? (((SEPARATOR item_))|(SEPARATO
 
 //pair ::= (NAME_CHARACTER | STRING_VALUE) WHITE_SPACE? ASSIGN WHITE_SPACE? item_
 
-elem ::= ( primitive ) WHITE_SPACE?
+elem ::= ( primitive | STRING_VALUE ) WHITE_SPACE?
 
 primitive ::= WHITE_SPACE? (bool | float | integer | "null")
 bool ::= ("true"|"false")
