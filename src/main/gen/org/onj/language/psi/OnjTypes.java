@@ -16,7 +16,6 @@ public interface OnjTypes {
   IElementType PRIMITIVE = new OnjElementType("PRIMITIVE");
 
   IElementType SEPARATOR = new OnjTokenType("SEPARATOR");
-  IElementType STRING_VALUE = new OnjTokenType("STRING_VALUE");
   IElementType WHITE_SPACE = new OnjTokenType("WHITE_SPACE");
 
   class Factory {

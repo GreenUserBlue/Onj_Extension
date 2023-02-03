@@ -55,12 +55,12 @@
 
 
 // ([\"\'])(\\.|[^\1])*?\1
-OnjFile ::= item_
-private item_ ::= (WHITE_SPACE? elem WHITE_SPACE? (((SEPARATOR item_)+)|(SEPARATOR?)))
+OnjFile ::= (item_ | WHITE_SPACE?)
+private item_ ::= (WHITE_SPACE? elem WHITE_SPACE? (((SEPARATOR item_))|(SEPARATOR?)))
 
 //pair ::= (NAME_CHARACTER | STRING_VALUE) WHITE_SPACE? ASSIGN WHITE_SPACE? item_
 
-elem ::= ( primitive | STRING_VALUE) WHITE_SPACE?
+elem ::= ( primitive ) WHITE_SPACE?
 
 primitive ::= WHITE_SPACE? (bool | float | integer | "null")
 bool ::= ("true"|"false")

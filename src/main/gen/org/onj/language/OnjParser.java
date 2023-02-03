@@ -36,9 +36,22 @@ public class OnjParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // item_
+  // item_ | WHITE_SPACE?
   static boolean OnjFile(PsiBuilder b, int l) {
-    return item_(b, l + 1);
+    if (!recursion_guard_(b, l, "OnjFile")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = item_(b, l + 1);
+    if (!r) r = OnjFile_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // WHITE_SPACE?
+  private static boolean OnjFile_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "OnjFile_1")) return false;
+    consumeToken(b, WHITE_SPACE);
+    return true;
   }
 
   /* ********************************************************** */
@@ -74,7 +87,7 @@ public class OnjParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ( primitive | STRING_VALUE) WHITE_SPACE?
+  // ( primitive ) WHITE_SPACE?
   public static boolean elem(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "elem")) return false;
     boolean r;
@@ -85,12 +98,13 @@ public class OnjParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // primitive | STRING_VALUE
+  // ( primitive )
   private static boolean elem_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "elem_0")) return false;
     boolean r;
+    Marker m = enter_section_(b);
     r = primitive(b, l + 1);
-    if (!r) r = consumeToken(b, STRING_VALUE);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -170,7 +184,7 @@ public class OnjParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // WHITE_SPACE? elem WHITE_SPACE? (((SEPARATOR item_)+)|(SEPARATOR?))
+  // WHITE_SPACE? elem WHITE_SPACE? (((SEPARATOR item_))|(SEPARATOR?))
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
@@ -197,7 +211,7 @@ public class OnjParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // ((SEPARATOR item_)+)|(SEPARATOR?)
+  // ((SEPARATOR item_))|(SEPARATOR?)
   private static boolean item__3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item__3")) return false;
     boolean r;
@@ -208,24 +222,9 @@ public class OnjParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (SEPARATOR item_)+
+  // SEPARATOR item_
   private static boolean item__3_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item__3_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = item__3_0_0(b, l + 1);
-    while (r) {
-      int c = current_position_(b);
-      if (!item__3_0_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "item__3_0", c)) break;
-    }
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // SEPARATOR item_
-  private static boolean item__3_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "item__3_0_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, SEPARATOR);

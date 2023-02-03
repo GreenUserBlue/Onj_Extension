@@ -494,8 +494,8 @@ public class OnjLexer implements FlexLexer {
             // fall through
           case 7: break;
           case 4: 
-            { yybegin(WAITING_VALUE); return OnjTypes.STRING_VALUE;
-            } 
+//            { yybegin(WAITING_VALUE); return OnjTypes.STRING_VALUE;
+//            }
             // fall through
           case 8: break;
           default:

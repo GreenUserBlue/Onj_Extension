@@ -28,9 +28,9 @@ public class OnjElemImpl extends ASTWrapperPsiElement implements OnjElem {
   }
 
   @Override
-  @Nullable
+  @NotNull
   public OnjPrimitive getPrimitive() {
-    return findChildByClass(OnjPrimitive.class);
+    return findNotNullChildByClass(OnjPrimitive.class);
   }
 
 }
