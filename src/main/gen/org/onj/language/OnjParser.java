@@ -170,7 +170,7 @@ public class OnjParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // WHITE_SPACE? elem WHITE_SPACE? (SEPARATOR item_?)*
+  // WHITE_SPACE? elem WHITE_SPACE? (((SEPARATOR item_)+)|(SEPARATOR?))
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
@@ -197,32 +197,47 @@ public class OnjParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // (SEPARATOR item_?)*
+  // ((SEPARATOR item_)+)|(SEPARATOR?)
   private static boolean item__3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item__3")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!item__3_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "item__3", c)) break;
-    }
-    return true;
-  }
-
-  // SEPARATOR item_?
-  private static boolean item__3_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "item__3_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, SEPARATOR);
-    r = r && item__3_0_1(b, l + 1);
+    r = item__3_0(b, l + 1);
+    if (!r) r = item__3_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // item_?
-  private static boolean item__3_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "item__3_0_1")) return false;
-    item_(b, l + 1);
+  // (SEPARATOR item_)+
+  private static boolean item__3_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "item__3_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = item__3_0_0(b, l + 1);
+    while (r) {
+      int c = current_position_(b);
+      if (!item__3_0_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "item__3_0", c)) break;
+    }
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // SEPARATOR item_
+  private static boolean item__3_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "item__3_0_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SEPARATOR);
+    r = r && item_(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // SEPARATOR?
+  private static boolean item__3_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "item__3_1")) return false;
+    consumeToken(b, SEPARATOR);
     return true;
   }
 
