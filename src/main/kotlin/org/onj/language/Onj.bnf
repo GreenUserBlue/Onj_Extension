@@ -11,6 +11,7 @@
   elementTypeHolderClass="org.onj.language.psi.OnjTypes"
   elementTypeClass="org.onj.language.psi.OnjElementType"
   tokenTypeClass="org.onj.language.psi.OnjTokenType"
+  extends(".*expr")=expr
 }
 
 //<digit> ::= 0|1|2|3|4|5|6|7|8|9
@@ -73,19 +74,29 @@ variable ::= "var" whi NAME_CHARACTER whi "=" whi elem_no_pair whi SEMIQOLON
 use ::= "use" whi NAME_CHARACTER whi SEMIQOLON
 import ::= "import" whi STRING_VALUE whi "as" whi NAME_CHARACTER whi SEMIQOLON
 
-//private item_ ::= (whi elem whi (((SEPARATOR item_))|(SEPARATOR?)))
-//elem ::= ( primitive | pair| STRING_VALUE | array | object) whi
+noItem ::= DOT DASH
+private item_ ::= (whi expr whi (((SEPARATOR item_))|(SEPARATOR?)))
 
 private item_no_pair_ ::= (whi elem_no_pair whi)
 
 pair ::=  whi (NAME_CHARACTER | STRING_VALUE) whi ASSIGN whi item_no_pair_
 
-elem_no_pair ::= ( primitive | STRING_VALUE | array | object) whi
+elem_no_pair ::= (expr) whi
+//elem ::= ( pair | elem_no_pair) whi
+expr ::=  whi (mathExpr | methodCall | exprElement) (typeForce?)
+mathExpr ::= (("(" expr ")"))
 
+//expr ::=  whi (("("expr")") | ( expr DOT expr) | (expr DASH expr) | exprElement | methodCall)
+
+methodCall ::= (NAME_CHARACTER"("(expr ("," expr)* )? ")")
+
+exprElement ::= (primitive | STRING_VALUE | array | object)
+
+typeForce ::= HASHTAG NAME_CHARACTER typeForce?
 primitive ::= whi (bool | float | integer | "null")
 bool ::= ("true"|"false")
 digit ::= ("0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"|"9")
-integer ::= (digit "_"* integer|(digit))
+integer ::= ((digit "_"* integer)|(digit))
 float ::= ((integer "." integer) | ("." integer))
-array ::= '['  whi ( item_no_pair_ whi  (((SEPARATOR item_no_pair_)+)|(SEPARATOR?)))?  whi ']'
+array ::= '['  whi ( item_ whi  (((SEPARATOR item_)+)|(SEPARATOR?)))?  whi ']'
 object ::= '{'  whi ( pair whi (((SEPARATOR pair)+)|(SEPARATOR?)) )?  whi '}'
