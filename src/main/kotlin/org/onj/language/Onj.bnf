@@ -11,7 +11,10 @@
   elementTypeHolderClass="org.onj.language.psi.OnjTypes"
   elementTypeClass="org.onj.language.psi.OnjElementType"
   tokenTypeClass="org.onj.language.psi.OnjTokenType"
-  extends(".*expr")=expr
+  psiImplUtilClass="org.onj.language.psi.impl.OnjPsiImplUtils"
+  mixin("variableStructure")="org.onj.language.psi.OnjVariableStructureMixin"
+  mixin("importStructure")="org.onj.language.psi.OnjImportStructureMixin"
+//  extends(".*expr")=expr
 }
 
 
@@ -19,7 +22,7 @@ OnjFile ::= ((objectEntry COMMA) | topLevelStructure)* objectEntry? topLevelStru
 
 topLevelStructure ::= importStructure | variableStructure | useStructure
 
-importStructure ::= IMPORT (string | literalExpression) asContextDependentKeyword IDENTIFIER SEMICOLON
+importStructure ::= IMPORT (string | literalExpression) asContextDependentKeyword variableDeclarationName SEMICOLON
 variableDeclarationName ::= IDENTIFIER
 variableStructure ::= VAR variableDeclarationName EQUALS expression SEMICOLON
 useStructure ::= USE IDENTIFIER SEMICOLON
@@ -38,7 +41,7 @@ infixFunctionCallExpression ::= binaryExpression (functionName infixFunctionCall
 binaryExpression ::= typeConversionExpression (binaryOperator binaryExpression)?
 typeConversionExpression ::= unaryExpression (HASH functionName)*
 unaryExpression ::= (MINUS unaryExpression) | variableAccessExpression
-variableAccessExpression ::= literalExpression (DOT literalExpression)*
+variableAccessExpression ::= literalExpression (DOT (variableAccessor | literalExpression))*
 literalExpression ::=   functionCallExpression |
                         INTEGER |
                         FLOAT |
@@ -49,8 +52,8 @@ literalExpression ::=   functionCallExpression |
                         variableExpression |
                         string
 
-
-variableExpression ::= IDENTIFIER
+variableExpression ::= IDENTIFIER {methods=[getOwnReferences]}
+variableAccessor ::= IDENTIFIER | string
 functionCallExpression ::= functionName L_PAREN (expression COMMA)* expression? R_PAREN
 functionName ::= IDENTIFIER
 groupedExpression ::= L_PAREN expression R_PAREN

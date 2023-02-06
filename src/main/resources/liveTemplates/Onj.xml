@@ -1,10 +1,10 @@
 <templateSet group="Onj">
-  <template name="object" value="&quot;$START$&quot;: {&#10;    &quot;$NEXT$&quot;:$Next$,&#10;    $END$&#10;}" description="Creates an named Object" toReformat="false" toShortenFQNames="true">
-    <variable name="START" expression="" defaultValue="" alwaysStopAt="true" />
-    <variable name="NEXT" expression="" defaultValue="" alwaysStopAt="true" />
-    <variable name="Next" expression="" defaultValue="" alwaysStopAt="true" />
-    <context>
-      <option name="OTHER" value="true" />
-    </context>
-  </template>
+    <template name="object" value="&quot;$START$&quot;: {&#10;    &quot;$NEXT$&quot;:$Next$,&#10;    $END$&#10;}" description="Creates an named Object" toReformat="false" toShortenFQNames="true">
+        <variable name="START" expression="" defaultValue="" alwaysStopAt="true" />
+        <variable name="NEXT" expression="" defaultValue="" alwaysStopAt="true" />
+        <variable name="Next" expression="" defaultValue="" alwaysStopAt="true" />
+        <context>
+            <option name="OTHER" value="true" />
+        </context>
+    </template>
 </templateSet>

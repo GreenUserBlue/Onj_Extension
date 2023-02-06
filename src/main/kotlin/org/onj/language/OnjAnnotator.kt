@@ -30,6 +30,9 @@ class OnjAnnotator : Annotator {
         OnjTypes.NAMED_OBJECT_NAME ->
             annotateWithAttribute(element, holder, OnjSyntaxHighlighter.NAMED_OBJECT_NAME_HIGHLIGHTING)
 
+        OnjTypes.VARIABLE_ACCESSOR ->
+            annotateWithAttribute(element, holder, OnjSyntaxHighlighter.VARIABLE_ACCESS_HIGHLIGHTING)
+
         else -> {}
     }
 

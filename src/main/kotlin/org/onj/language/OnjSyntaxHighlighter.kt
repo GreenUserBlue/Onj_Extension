@@ -133,21 +133,10 @@ class OnjSyntaxHighlighter : SyntaxHighlighterBase() {
                 .createTextAttributesKey("ONJ_COMMA", DefaultLanguageHighlighterColors.COMMA)
         )
 
-//        val SEPARATOR = TextAttributesKey.createTextAttributesKey(
-//            "Onj_SEPARATOR",
-//            DefaultLanguageHighlighterColors.OPERATION_SIGN
-//        )
-//        val KEY = TextAttributesKey.createTextAttributesKey("Onj_KEY", DefaultLanguageHighlighterColors.KEYWORD)
-//        val VALUE = TextAttributesKey.createTextAttributesKey("Onj_VALUE", DefaultLanguageHighlighterColors.STRING)
-//        val COMMENT =
-//            TextAttributesKey.createTextAttributesKey("Onj_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT)
-//        val BAD_CHARACTER =
-//            TextAttributesKey.createTextAttributesKey("Onj_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER)
-//        private val BAD_CHAR_KEYS = arrayOf(BAD_CHARACTER)
-//        private val SEPARATOR_KEYS = arrayOf(SEPARATOR)
-//        private val KEY_KEYS = arrayOf(KEY)
-//        private val VALUE_KEYS = arrayOf(VALUE)
-//        private val COMMENT_KEYS = arrayOf(COMMENT)
-//        private val EMPTY_KEYS = arrayOf<TextAttributesKey>()
+        val VARIABLE_ACCESS_HIGHLIGHTING = arrayOf(
+            TextAttributesKey
+                .createTextAttributesKey("ONJ_VARIABLE_ACCESS", DefaultLanguageHighlighterColors.INSTANCE_FIELD)
+        )
+
     }
 }
