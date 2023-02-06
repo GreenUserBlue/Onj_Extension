@@ -31,8 +31,8 @@
         <lang.parserDefinition
                 language="Onj"
                 implementationClass="org.onj.language.OnjParserDefinition"/>
-<!--        <lang.syntaxHighlighterFactory-->
-<!--                language="Onj"-->
-<!--                implementationClass="org.onj.language.OnjSyntaxHighlighterFactory"/>-->
+        <lang.syntaxHighlighterFactory
+                language="Onj"
+                implementationClass="org.onj.language.OnjSyntaxHighlighterFactory"/>
     </extensions>
 </idea-plugin>

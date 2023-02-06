@@ -23,7 +23,8 @@ importStructure ::= IMPORT (string | literalExpression) "as" IDENTIFIER SEMICOLO
 variableStructure ::= VAR IDENTIFIER EQUALS expression SEMICOLON
 useStructure ::= USE IDENTIFIER SEMICOLON
 
-keyValuePair ::= (IDENTIFIER | string) COLON expression
+keyValuePair ::= key COLON expression
+key ::= (IDENTIFIER | string)
 tripleDot ::= DOT DOT DOT literalExpression
 
 objectEntry ::= tripleDot | keyValuePair
@@ -52,7 +53,8 @@ functionName ::= IDENTIFIER
 groupedExpression ::= L_PAREN expression R_PAREN
 
 object ::= L_BRACE (objectEntry COMMA)* objectEntry? R_BRACE
-namedObject ::= DOLLAR IDENTIFIER object
+namedObject ::= DOLLAR namedObjectName object
+namedObjectName ::= IDENTIFIER
 array ::= L_BRACKET (arrayEntry COMMA)* arrayEntry? R_BRACKET
 
 binaryOperator ::= PLUS | MINUS | STAR | DIV
