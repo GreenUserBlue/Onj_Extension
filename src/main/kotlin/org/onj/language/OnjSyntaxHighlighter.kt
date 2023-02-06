@@ -17,8 +17,6 @@ class OnjSyntaxHighlighter : SyntaxHighlighterBase() {
     override fun getHighlightingLexer(): Lexer = object : FlexAdapter(OnjLexer(null)) { }
 
     override fun getTokenHighlights(tokenType: IElementType): Array<TextAttributesKey> = when (tokenType) {
-
-        OnjTypes.KEY -> KEY_HIGHLIGHTING //TODO: fix using RainbowVisitor
         TokenType.BAD_CHARACTER -> BAD_CHARACTER_HIGHLIGHTING
         OnjTypes.STRING_ESCAPE -> ESCAPE_HIGHLIGHTING
         OnjTypes.INVALID_STRING_ESCAPE -> INVALID_ESCAPE_HIGHLIGHTING
@@ -26,9 +24,6 @@ class OnjSyntaxHighlighter : SyntaxHighlighterBase() {
         OnjTypes.LINE_COMMENT -> LINE_COMMENT_HIGHLIGHTING
         OnjTypes.BLOCK_COMMENT -> BLOCK_COMMENT_HIGHLIGHTING
         OnjTypes.INTEGER, OnjTypes.FLOAT -> NUMBER_HIGHLIGHTING
-//        OnjTypes.FUNCTION_NAME -> FUNCTION_NAME_HIGHLIGHTING
-//        OnjTypes.NAMED_OBJECT_NAME -> NAMED_OBJECT_NAME_HIGHLIGHTING
-//        OnjTypes.IDENTIFIER -> VARIABLE_NAME_HIGHLIGHTING
         in OnjTokenSets.operators -> OPERATOR_HIGHLIGHTING
         in OnjTokenSets.parens -> PAREN_HIGHLIGHTING
         in OnjTokenSets.brackets -> BRACKET_HIGHLIGHTING

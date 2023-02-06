@@ -34,5 +34,8 @@
         <lang.syntaxHighlighterFactory
                 language="Onj"
                 implementationClass="org.onj.language.OnjSyntaxHighlighterFactory"/>
+        <annotator
+                language="Onj"
+                implementationClass="org.onj.language.OnjAnnotator"/>
     </extensions>
 </idea-plugin>

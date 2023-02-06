@@ -19,9 +19,12 @@ OnjFile ::= ((objectEntry COMMA) | topLevelStructure)* objectEntry? topLevelStru
 
 topLevelStructure ::= importStructure | variableStructure | useStructure
 
-importStructure ::= IMPORT (string | literalExpression) "as" IDENTIFIER SEMICOLON
-variableStructure ::= VAR IDENTIFIER EQUALS expression SEMICOLON
+importStructure ::= IMPORT (string | literalExpression) asContextDependentKeyword IDENTIFIER SEMICOLON
+variableDeclarationName ::= IDENTIFIER
+variableStructure ::= VAR variableDeclarationName EQUALS expression SEMICOLON
 useStructure ::= USE IDENTIFIER SEMICOLON
+
+asContextDependentKeyword ::= "as"
 
 keyValuePair ::= key COLON expression
 key ::= (IDENTIFIER | string)
@@ -33,7 +36,7 @@ arrayEntry ::= tripleDot | expression
 expression ::= infixFunctionCallExpression
 infixFunctionCallExpression ::= binaryExpression (functionName infixFunctionCallExpression)?
 binaryExpression ::= typeConversionExpression (binaryOperator binaryExpression)?
-typeConversionExpression ::= unaryExpression (HASH IDENTIFIER)*
+typeConversionExpression ::= unaryExpression (HASH functionName)*
 unaryExpression ::= (MINUS unaryExpression) | variableAccessExpression
 variableAccessExpression ::= literalExpression (DOT literalExpression)*
 literalExpression ::=   functionCallExpression |
