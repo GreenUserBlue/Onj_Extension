@@ -14,89 +14,48 @@
   extends(".*expr")=expr
 }
 
-//<digit> ::= 0|1|2|3|4|5|6|7|8|9
-//<integer> ::= <digit> | <digit><integer>
-//<float> ::= <integer> "." <integer> | "." <integer>
+
+OnjFile ::= ((objectEntry COMMA) | topLevelStructure)* objectEntry? topLevelStructure?
+
+topLevelStructure ::= importStructure | variableStructure | useStructure
+
+importStructure ::= IMPORT (string | literalExpression) "as" IDENTIFIER SEMICOLON
+variableStructure ::= VAR IDENTIFIER EQUALS expression SEMICOLON
+useStructure ::= USE IDENTIFIER SEMICOLON
+
+keyValuePair ::= (IDENTIFIER | string) COLON expression
+tripleDot ::= DOT DOT DOT literalExpression
+
+objectEntry ::= tripleDot | keyValuePair
+arrayEntry ::= tripleDot | expression
+
+expression ::= infixFunctionCallExpression
+infixFunctionCallExpression ::= binaryExpression (functionName infixFunctionCallExpression)?
+binaryExpression ::= typeConversionExpression (binaryOperator binaryExpression)?
+typeConversionExpression ::= unaryExpression (HASH IDENTIFIER)*
+unaryExpression ::= (MINUS unaryExpression) | variableAccessExpression
+variableAccessExpression ::= literalExpression (DOT literalExpression)*
+literalExpression ::=   functionCallExpression |
+                        INTEGER |
+                        FLOAT |
+                        groupedExpression |
+                        object |
+                        namedObject |
+                        array |
+                        variableExpression |
+                        string
 
 
-//OnjFile ::= item_*
-//
-//private item_ ::= (property|COMMENT|CRLF)
-//
-//property ::= (KEY? SEPARATOR VALUE?) | KEY
+variableExpression ::= IDENTIFIER
+functionCallExpression ::= functionName L_PAREN (expression COMMA)* expression? R_PAREN
+functionName ::= IDENTIFIER
+groupedExpression ::= L_PAREN expression R_PAREN
 
-// (elem ( ',' elem)*) | WHITE_SPACE | BLOCK_COMMENT | COMMENT
+object ::= L_BRACE (objectEntry COMMA)* objectEntry? R_BRACE
+namedObject ::= DOLLAR IDENTIFIER object
+array ::= L_BRACKET (arrayEntry COMMA)* arrayEntry? R_BRACKET
 
-//OnjFile ::= item_*
-//
-//private item_ ::= <pair> | WHITE_SPACE
-//
-//
-//<any>   ::= "."
-//<stringEsc> ::= "\\" <any>
-//<MyText>::= ""
-//
-//namedKeys ::=  '"' *(<stringEsc> | <any>) '"' | "'" *(<any>) "'" | <MyText>
-//
-//
-//<elem> ::= WHITE_SPACE (<array> | <object> |   elem | <pair> | <primitive>)
-//
-//
-//<primitive> ::= <bool> | <integer> | <float> | <MyText> | "null"
-//<bool> ::= "true" | "false"
-//<digit> ::= 0|1|2|3|4|5|6|7|8|9
-//<integer> ::= <digit> | <digit><integer>
-//<float> ::= <integer> "." <integer> | "." <integer>
-//<pair> ::= namedKeys SEPARATOR <elem>
-//
-//
-//<array> ::= '[' ( <elem> ( ',' <elem>)* | ) ']'
-//<object> ::= '[' ( <pair> ( ',' <pair>)* | ) ']'
+binaryOperator ::= PLUS | MINUS | STAR | DIV
+string ::= STRING_BEGIN (STRING_ESCAPE | INVALID_STRING_ESCAPE | STRING_PART)* STRING_END
 
-//var x="darkmode"
-
-//0x 0o 0b    hex, oct, binär, nur ganzzahlig
-// rechnungen bei import und ...(function()) mit klammer, sonst ohne
-// use abcdefg;
-// function ist teil einer Rechnung
-// infix functionen sind shit
-//
-
-//abc: 3 rnd()
-//import "./shit/"
-
-OnjFile ::= (topLevel)
-whi::=WHITE_SPACE?
-topLevel::= (((variable | use | import)  topLevel?) | (pair (SEPARATOR topLevel)?) | (whi))
-//topLevel::= (variable)
-
-variable ::= "var" whi NAME_CHARACTER whi "=" whi elem_no_pair whi SEMIQOLON
-use ::= "use" whi NAME_CHARACTER whi SEMIQOLON
-import ::= "import" whi STRING_VALUE whi "as" whi NAME_CHARACTER whi SEMIQOLON
-
-noItem ::= DOT DASH
-private item_ ::= (whi expr whi (((SEPARATOR item_))|(SEPARATOR?)))
-
-private item_no_pair_ ::= (whi elem_no_pair whi)
-
-pair ::=  whi (NAME_CHARACTER | STRING_VALUE) whi ASSIGN whi item_no_pair_
-
-elem_no_pair ::= (expr) whi
-//elem ::= ( pair | elem_no_pair) whi
-expr ::=  whi (mathExpr | methodCall | exprElement) (typeForce?)
-mathExpr ::= (("(" expr ")"))
-
-//expr ::=  whi (("("expr")") | ( expr DOT expr) | (expr DASH expr) | exprElement | methodCall)
-
-methodCall ::= (NAME_CHARACTER"("(expr ("," expr)* )? ")")
-
-exprElement ::= (primitive | STRING_VALUE | array | object)
-
-typeForce ::= HASHTAG NAME_CHARACTER typeForce?
-primitive ::= whi (bool | float | integer | "null")
-bool ::= ("true"|"false")
-digit ::= ("0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"|"9")
-integer ::= ((digit "_"* integer)|(digit))
-float ::= ((integer "." integer) | ("." integer))
-array ::= '['  whi ( item_ whi  (((SEPARATOR item_)+)|(SEPARATOR?)))?  whi ']'
-object ::= '{'  whi ( pair whi (((SEPARATOR pair)+)|(SEPARATOR?)) )?  whi '}'
+private comment_ ::= LINE_COMMENT | BLOCK_COMMENT

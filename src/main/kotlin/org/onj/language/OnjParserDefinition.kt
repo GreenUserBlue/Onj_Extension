@@ -40,7 +40,7 @@ class OnjParserDefinition : ParserDefinition {
     }
 
     override fun createElement(node: ASTNode?): PsiElement {
-        return OnjTypes.Factory.createElement(node);
+        return OnjTypes.Factory.createElement(node)
     }
 
     override fun createFile(viewProvider: FileViewProvider): PsiFile {

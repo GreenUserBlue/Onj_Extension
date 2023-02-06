@@ -17,51 +17,99 @@ import com.intellij.psi.TokenType;
 %eof}
 
 CRLF=\R
-WHITE_SPACE=[\ \n\t\f]+?
-FIRST_VALUE_CHARACTER=[^ \n\f\\] | "\\"{CRLF} | "\\".
-//VALUE_CHARACTER=[^\n\f\\] | "\\"{CRLF} | "\\".
-END_OF_LINE_COMMENT=("//")[^\r\n]*?
-BLOCK_COMMENT=("/*").*?("*/")
-SEPARATOR=[,]
-SEMIQOLON=[;]
-ASSIGN=[:]
-DOT=[*/]
-DASH=[+-]
-HASHTAG=[#]
-//KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
-NAME_CHARACTER=\p{L}\w*
-STRING_VALUE=[\"]([^\"\\]|\\.)*[\"]|'([^'\\]|\\.)*'
+WHITE_SPACE = [\ \n\t\f]+?
 
-%state WAITING_VALUE
+LINE_COMMENT = "//".*?{CRLF}
+BLOCK_COMMENT = "/*"(.|{CRLF})*?"*/"
+
+IMPORT = "import"
+USE = "use"
+VAR = "var"
+
+IDENTIFIER = [\p{L}_]+[\p{L}_0-9]*
+
+INTEGER = ("0b"[10_]+)|("0o"[0-8_]+)|("0x"[0-9a-fA-F_]+)|([0-9_]+)
+FLOAT = [0-9_]+"."[0-9_]+
+
+COLON = ":"
+COMMA = ","
+PLUS = "+"
+MINUS = "-"
+STAR = "*"
+DIV = "/"
+DOT = "."
+DOLLAR = "$"
+SEMICOLON = ";"
+EQUALS = "="
+HASH = "#"
+R_BRACE = "}"
+L_BRACE = "{"
+R_BRACKET = "]"
+L_BRACKET = "["
+R_PAREN = ")"
+L_PAREN = "("
+
+DOUBLE_QUOTE = \"
+SINGLE_QUOTE = \'
+
+STRING_CONTENT = [^\R\"\'\\]*?
+//STRING_CONTENT = [^\"\'\\]*?
+ESCAPE_SEQUENCE = \\n|\\r|\\t|\\\"|\\\'
+INVALID_ESCAPE = \\.
+
+%state STRING_DOUBLE_QUOTE
+%state STRING_SINGLE_QUOTE
 
 %%
 
-//<YYINITIAL> {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return OnjTypes.COMMENT; }
-//<YYINITIAL> {BLOCK_COMMENT}                                 { yybegin(YYINITIAL); return OnjTypes.BLOCK_COMMENT; }
+<YYINITIAL> ({CRLF}|{WHITE_SPACE})+                            { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
 
-//<YYINITIAL> {KEY_CHARACTER}+                                { yybegin(YYINITIAL); return OnjTypes.NAMED_KEYS; }
+<YYINITIAL> {LINE_COMMENT}                                     { yybegin(YYINITIAL); return OnjTypes.LINE_COMMENT; }
+<YYINITIAL> {BLOCK_COMMENT}                                     { yybegin(YYINITIAL); return OnjTypes.BLOCK_COMMENT; }
 
-({CRLF}|{WHITE_SPACE})+                                     { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
-<YYINITIAL> {SEPARATOR}                                     { yybegin(WAITING_VALUE); return OnjTypes.SEPARATOR; }
-<YYINITIAL> {SEMIQOLON}                                     { yybegin(WAITING_VALUE); return OnjTypes.SEMIQOLON; }
-<YYINITIAL> {ASSIGN}                                     { yybegin(WAITING_VALUE); return OnjTypes.ASSIGN; }
-<YYINITIAL> {DOT}                                     { yybegin(WAITING_VALUE); return OnjTypes.DOT; }
-<YYINITIAL> {DASH}                                     { yybegin(WAITING_VALUE); return OnjTypes.DASH; }
-<YYINITIAL> {STRING_VALUE}                                     { yybegin(WAITING_VALUE); return OnjTypes.STRING_VALUE; }
-<YYINITIAL> {NAME_CHARACTER}                                { yybegin(YYINITIAL); return OnjTypes.NAME_CHARACTER; }
-<YYINITIAL> {HASHTAG}                                     { yybegin(WAITING_VALUE); return OnjTypes.HASHTAG; }
+<YYINITIAL> {IMPORT}                                     { yybegin(YYINITIAL); return OnjTypes.IMPORT; }
+<YYINITIAL> {USE}                                     { yybegin(YYINITIAL); return OnjTypes.USE; }
+<YYINITIAL> {VAR}                                     { yybegin(YYINITIAL); return OnjTypes.VAR; }
 
+<YYINITIAL> {IDENTIFIER}                                     { yybegin(YYINITIAL); return OnjTypes.IDENTIFIER; }
+<YYINITIAL> {INTEGER}                                     { yybegin(YYINITIAL); return OnjTypes.INTEGER; }
+<YYINITIAL> {FLOAT}                                     { yybegin(YYINITIAL); return OnjTypes.FLOAT; }
 
-<WAITING_VALUE> {WHITE_SPACE}+                              { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
-<WAITING_VALUE> {SEPARATOR}                     { yybegin(WAITING_VALUE); return OnjTypes.SEPARATOR; }
-<WAITING_VALUE> {SEMIQOLON}                     { yybegin(WAITING_VALUE); return OnjTypes.SEMIQOLON; }
-<WAITING_VALUE> {ASSIGN}                     { yybegin(WAITING_VALUE); return OnjTypes.ASSIGN; }
-<WAITING_VALUE> {DOT}                     { yybegin(WAITING_VALUE); return OnjTypes.DOT; }
-<WAITING_VALUE> {DASH}                     { yybegin(WAITING_VALUE); return OnjTypes.DASH; }
-<WAITING_VALUE> {STRING_VALUE}                     { yybegin(WAITING_VALUE); return OnjTypes.STRING_VALUE; }
-<WAITING_VALUE> {NAME_CHARACTER}                              { yybegin(WAITING_VALUE); return OnjTypes.NAME_CHARACTER; }
-<WAITING_VALUE> {HASHTAG}                              { yybegin(WAITING_VALUE); return OnjTypes.HASHTAG; }
+<YYINITIAL> {COLON}                                     { yybegin(YYINITIAL); return OnjTypes.COLON; }
+<YYINITIAL> {COMMA}                                     { yybegin(YYINITIAL); return OnjTypes.COMMA; }
+<YYINITIAL> {PLUS}                                     { yybegin(YYINITIAL); return OnjTypes.PLUS; }
+<YYINITIAL> {MINUS}                                     { yybegin(YYINITIAL); return OnjTypes.MINUS; }
+<YYINITIAL> {STAR}                                     { yybegin(YYINITIAL); return OnjTypes.STAR; }
+<YYINITIAL> {DIV}                                     { yybegin(YYINITIAL); return OnjTypes.DIV; }
+<YYINITIAL> {DOT}                                     { yybegin(YYINITIAL); return OnjTypes.DOT; }
+<YYINITIAL> {DOLLAR}                                     { yybegin(YYINITIAL); return OnjTypes.DOLLAR; }
+<YYINITIAL> {SEMICOLON}                                     { yybegin(YYINITIAL); return OnjTypes.SEMICOLON; }
+<YYINITIAL> {EQUALS}                                     { yybegin(YYINITIAL); return OnjTypes.EQUALS; }
+<YYINITIAL> {HASH}                                     { yybegin(YYINITIAL); return OnjTypes.HASH; }
+<YYINITIAL> {R_BRACE}                                     { yybegin(YYINITIAL); return OnjTypes.R_BRACE; }
+<YYINITIAL> {L_BRACE}                                     { yybegin(YYINITIAL); return OnjTypes.L_BRACE; }
+<YYINITIAL> {R_BRACKET}                                     { yybegin(YYINITIAL); return OnjTypes.R_BRACKET; }
+<YYINITIAL> {L_BRACKET}                                     { yybegin(YYINITIAL); return OnjTypes.L_BRACKET; }
+<YYINITIAL> {R_PAREN}                                     { yybegin(YYINITIAL); return OnjTypes.R_PAREN; }
+<YYINITIAL> {L_PAREN}                                     { yybegin(YYINITIAL); return OnjTypes.L_PAREN; }
 
-<WAITING_VALUE> {CRLF}({CRLF}|{WHITE_SPACE})+               { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+<YYINITIAL> {DOUBLE_QUOTE}                                     { yybegin(STRING_DOUBLE_QUOTE); return OnjTypes.STRING_BEGIN; }
+<YYINITIAL> {SINGLE_QUOTE}                                     { yybegin(STRING_SINGLE_QUOTE); return OnjTypes.STRING_BEGIN; }
+
+<STRING_DOUBLE_QUOTE> {
+    {DOUBLE_QUOTE}   { yybegin(YYINITIAL); return OnjTypes.STRING_END; }
+    {ESCAPE_SEQUENCE} { yybegin(STRING_DOUBLE_QUOTE); return OnjTypes.STRING_ESCAPE; }
+    {INVALID_ESCAPE} { yybegin(STRING_DOUBLE_QUOTE); return OnjTypes.INVALID_STRING_ESCAPE; }
+    {SINGLE_QUOTE} { yybegin(STRING_DOUBLE_QUOTE); return OnjTypes.STRING_PART; }
+    {STRING_CONTENT} { yybegin(STRING_DOUBLE_QUOTE); return OnjTypes.STRING_PART; }
+}
+
+<STRING_SINGLE_QUOTE> {
+    {SINGLE_QUOTE}   { yybegin(YYINITIAL); return OnjTypes.STRING_END; }
+    {ESCAPE_SEQUENCE} { yybegin(STRING_SINGLE_QUOTE); return OnjTypes.STRING_ESCAPE; }
+    {INVALID_ESCAPE} { yybegin(STRING_SINGLE_QUOTE); return OnjTypes.INVALID_STRING_ESCAPE; }
+    {DOUBLE_QUOTE} { yybegin(STRING_SINGLE_QUOTE); return OnjTypes.STRING_PART; }
+    {STRING_CONTENT} { yybegin(STRING_SINGLE_QUOTE); return OnjTypes.STRING_PART; }
+}
 
 [^]                                                         { return TokenType.BAD_CHARACTER; }
