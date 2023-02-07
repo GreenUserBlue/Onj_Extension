@@ -39,5 +39,11 @@
         <lang.formatter
             language="Onj"
             implementationClass="org.onj.language.formatter.OnjFormattingModelBuilder"/>
+        <lang.braceMatcher
+            language="Onj"
+            implementationClass="org.onj.language.OnjPairedBracesMatcher"/>
+        <lang.foldingBuilder
+            language="Onj"
+            implementationClass="org.onj.language.OnjFoldingDescriptor"/>
     </extensions>
 </idea-plugin>

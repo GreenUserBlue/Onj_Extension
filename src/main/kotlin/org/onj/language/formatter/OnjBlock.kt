@@ -6,6 +6,7 @@ import com.intellij.psi.TokenType
 import com.intellij.psi.formatter.common.AbstractBlock
 import org.onj.language.psi.OnjTokenSets
 import org.onj.language.psi.OnjTypes
+import org.onj.language.utils.Utils.iterateOverAstChildren
 
 class OnjBlock(
     private val spacingBuilder: SpacingBuilder,
@@ -22,13 +23,11 @@ class OnjBlock(
     override fun isLeaf(): Boolean = node.firstChildNode == null
 
     override fun buildChildren(): MutableList<Block> {
-        var curChild = node.firstChildNode
         val blocks = mutableListOf<Block>()
-        while (curChild != null) {
-            if (curChild.elementType == TokenType.WHITE_SPACE) {
-                curChild = curChild.treeNext
-                continue
-            }
+        iterateOverAstChildren(node) { curChild ->
+
+            if (curChild.elementType == TokenType.WHITE_SPACE) return@iterateOverAstChildren
+
             val block = OnjBlock(
                 spacingBuilder,
                 curChild,
@@ -36,8 +35,9 @@ class OnjBlock(
                 null,
                 getChildIndent(curChild)
             )
+
             blocks.add(block)
-            curChild = curChild.treeNext
+
         }
         return blocks
     }
