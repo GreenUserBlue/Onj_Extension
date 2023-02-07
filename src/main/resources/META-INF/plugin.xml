@@ -7,7 +7,7 @@
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
     <name>Onj Extension</name>
 
-    <vendor email="teribark10@gmail.com" >Swaglix</vendor>
+    <vendor email="teribark10@gmail.com">Swaglix</vendor>
 
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
@@ -36,5 +36,8 @@
                 implementationClass="org.onj.language.OnjAnnotator"/>
         <psi.declarationProvider
                 implementation="org.onj.language.OnjSymbolDeclarationProvider"/>
+        <lang.formatter
+            language="Onj"
+            implementationClass="org.onj.language.formatter.OnjFormattingModelBuilder"/>
     </extensions>
 </idea-plugin>

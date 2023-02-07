@@ -17,6 +17,10 @@ interface OnjTokenSets {
             OnjTypes.PLUS, OnjTypes.MINUS, OnjTypes.STAR, OnjTypes.DIV, OnjTypes.HASH, OnjTypes.DOLLAR
         )
 
+        val binaryOperators: TokenSet = TokenSet.create(
+            OnjTypes.PLUS, OnjTypes.MINUS, OnjTypes.STAR, OnjTypes.DIV
+        )
+
         val keywords: TokenSet = TokenSet.create(
             OnjTypes.USE, OnjTypes.IMPORT, OnjTypes.VAR
         )
