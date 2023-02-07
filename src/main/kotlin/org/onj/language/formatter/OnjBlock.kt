@@ -4,10 +4,8 @@ import com.intellij.formatting.*
 import com.intellij.lang.ASTNode
 import com.intellij.psi.TokenType
 import com.intellij.psi.formatter.common.AbstractBlock
-import org.onj.language.OnjParserDefinition
 import org.onj.language.psi.OnjTokenSets
 import org.onj.language.psi.OnjTypes
-import kotlin.reflect.jvm.jvmName
 
 class OnjBlock(
     private val spacingBuilder: SpacingBuilder,
@@ -50,6 +48,10 @@ class OnjBlock(
 
     private fun getChildIndent(childNode: ASTNode): Indent? {
         if (node.elementType == OnjTypes.OBJECT && childNode.elementType !in OnjTokenSets.braces) {
+            return Indent.getNormalIndent()
+        }
+
+        if (node.elementType == OnjTypes.ARRAY && childNode.elementType !in OnjTokenSets.brackets) {
             return Indent.getNormalIndent()
         }
 
