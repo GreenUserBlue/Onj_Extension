@@ -45,5 +45,8 @@
         <lang.foldingBuilder
             language="Onj"
             implementationClass="org.onj.language.OnjFoldingDescriptor"/>
+        <lang.commenter
+            language="Onj"
+            implementationClass="org.onj.language.OnjCommenter"/>
     </extensions>
 </idea-plugin>
