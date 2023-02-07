@@ -1,4 +1,4 @@
-package org.onj.language
+package org.onj.language.symbols
 
 import com.intellij.model.psi.PsiSymbolDeclaration
 import com.intellij.model.psi.PsiSymbolDeclarationProvider

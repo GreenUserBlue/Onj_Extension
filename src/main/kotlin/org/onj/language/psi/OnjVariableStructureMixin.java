@@ -2,10 +2,8 @@ package org.onj.language.psi;
 
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.NavigatablePsiElement;
 import org.jetbrains.annotations.NotNull;
-import org.onj.language.OnjVariableSymbolDeclaration;
-import org.onj.language.psi.impl.OnjVariableStructureImpl;
+import org.onj.language.symbols.OnjVariableSymbolDeclaration;
 
 public class OnjVariableStructureMixin extends ASTWrapperPsiElement {
 

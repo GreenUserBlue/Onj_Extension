@@ -30,12 +30,12 @@
                 implementationClass="org.onj.language.OnjParserDefinition"/>
         <lang.syntaxHighlighterFactory
                 language="Onj"
-                implementationClass="org.onj.language.OnjSyntaxHighlighterFactory"/>
+                implementationClass="org.onj.language.highlighting.OnjSyntaxHighlighterFactory"/>
         <annotator
                 language="Onj"
-                implementationClass="org.onj.language.OnjAnnotator"/>
+                implementationClass="org.onj.language.highlighting.OnjAnnotator"/>
         <psi.declarationProvider
-                implementation="org.onj.language.OnjSymbolDeclarationProvider"/>
+                implementation="org.onj.language.symbols.OnjSymbolDeclarationProvider"/>
         <lang.formatter
             language="Onj"
             implementationClass="org.onj.language.formatter.OnjFormattingModelBuilder"/>

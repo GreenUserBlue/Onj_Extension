@@ -3,7 +3,7 @@ package org.onj.language.psi;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import org.jetbrains.annotations.NotNull;
-import org.onj.language.OnjVariableSymbolDeclaration;
+import org.onj.language.symbols.OnjVariableSymbolDeclaration;
 
 public class OnjImportStructureMixin extends ASTWrapperPsiElement {
 

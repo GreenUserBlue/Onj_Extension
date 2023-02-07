@@ -1,6 +1,6 @@
 @file:Suppress("UnstableApiUsage")
 
-package org.onj.language
+package org.onj.language.symbols
 
 import com.intellij.model.Pointer
 import com.intellij.model.Symbol

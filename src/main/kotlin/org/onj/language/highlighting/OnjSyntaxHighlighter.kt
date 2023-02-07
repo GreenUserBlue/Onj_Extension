@@ -1,4 +1,4 @@
-package org.onj.language
+package org.onj.language.highlighting
 
 import com.intellij.lexer.FlexAdapter
 import com.intellij.lexer.Lexer
@@ -8,6 +8,7 @@ import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
 import com.intellij.psi.TokenType
 import com.intellij.psi.tree.IElementType
+import org.onj.language.OnjLexer
 import org.onj.language.psi.OnjTokenSets
 import org.onj.language.psi.OnjTypes
 

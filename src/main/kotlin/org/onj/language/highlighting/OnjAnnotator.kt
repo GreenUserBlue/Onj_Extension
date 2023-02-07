@@ -1,4 +1,4 @@
-package org.onj.language
+package org.onj.language.highlighting
 
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.Annotator
