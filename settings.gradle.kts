@@ -1,1 +1,1 @@
-rootProject.name = "Oji_Extension"
+rootProject.name = "Onj_Plugin"
