@@ -46,6 +46,7 @@ class OnjFormattingModelBuilder : FormattingModelBuilder {
             .before(OnjTypes.SEMICOLON).spaceIf(false)
             .around(OnjTypes.EQUALS).spaceIf(true)
             .before(OnjTypes.COMMA).spaceIf(false)
+            .after(OnjTypes.COMMA).spaceIf(true)
         return spacingBuilder
     }
 

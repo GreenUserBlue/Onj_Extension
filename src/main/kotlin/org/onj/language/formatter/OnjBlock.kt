@@ -24,6 +24,7 @@ class OnjBlock(
 
     override fun buildChildren(): MutableList<Block> {
         val blocks = mutableListOf<Block>()
+        var isFistEntry = true // only relevant when inside an object or array
         iterateOverAstChildren(node) { curChild ->
 
             if (curChild.elementType == TokenType.WHITE_SPACE) return@iterateOverAstChildren
@@ -31,13 +32,16 @@ class OnjBlock(
             val block = OnjBlock(
                 spacingBuilder,
                 curChild,
-                Wrap.createWrap(WrapType.NONE, false),
+                getChildWrap(curChild, isFistEntry),
                 null,
                 getChildIndent(curChild)
             )
 
             blocks.add(block)
 
+            if (curChild.elementType == OnjTypes.ARRAY_ENTRY || curChild.elementType == OnjTypes.OBJECT_ENTRY) {
+                isFistEntry = false
+            }
         }
         return blocks
     }
@@ -56,6 +60,24 @@ class OnjBlock(
         }
 
         return Indent.getNoneIndent()
+    }
+
+    private fun getChildWrap(childNode: ASTNode, isFirstChild: Boolean): Wrap? {
+        if (childNode.elementType == OnjTypes.ARRAY_ENTRY) {
+            return if (isFirstChild) {
+                // always wrap the first element
+                Wrap.createWrap(WrapType.ALWAYS, true)
+            } else {
+                Wrap.createWrap(WrapType.NORMAL, false)
+            }
+        }
+        if (childNode.elementType == OnjTypes.OBJECT_ENTRY) {
+            return Wrap.createWrap(WrapType.ALWAYS, true)
+        }
+        if (childNode.elementType == OnjTypes.R_BRACKET || childNode.elementType == OnjTypes.R_BRACE) {
+            return Wrap.createWrap(WrapType.ALWAYS, true)
+        }
+        return Wrap.createWrap(WrapType.NONE, false)
     }
 
     override fun getChildIndent(): Indent? {
