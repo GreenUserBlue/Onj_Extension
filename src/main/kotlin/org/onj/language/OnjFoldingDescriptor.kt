@@ -17,17 +17,19 @@ class OnjFoldingDescriptor : FoldingBuilder, DumbAware {
     }
 
     private fun buildFoldRegions(node: ASTNode, regions: MutableList<FoldingDescriptor>) {
-        if (node.elementType == OnjTypes.OBJECT || node.elementType == OnjTypes.ARRAY) {
+        val foldableTypes = listOf(OnjTypes.OBJECT, OnjTypes.ARRAY, OnjTypes.BLOCK_COMMENT)
+        if (node.elementType in foldableTypes) {
             regions.add(FoldingDescriptor(node, node.textRange))
         }
         iterateOverAstChildren(node) { buildFoldRegions(it, regions) }
     }
 
     override fun getPlaceholderText(node: ASTNode): String =
-        if (node.elementType == OnjTypes.OBJECT) {
-            "{ ... }"
-        } else {
-            "[ ... ]"
+        when (node.elementType) {
+            OnjTypes.OBJECT -> "{ ... }"
+            OnjTypes.ARRAY -> "[ ... ]"
+            OnjTypes.BLOCK_COMMENT -> "/* ... */"
+            else -> "..."
         }
 
     override fun isCollapsedByDefault(node: ASTNode): Boolean = false
