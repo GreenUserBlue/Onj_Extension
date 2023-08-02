@@ -52,9 +52,9 @@ L_PAREN = "("
 DOUBLE_QUOTE = \"
 SINGLE_QUOTE = \'
 
-STRING_CONTENT = [^\R\"\'\\]*?
+STRING_CONTENT = [^\"\'\\\r]*?
 //STRING_CONTENT = [^\"\'\\]*?
-ESCAPE_SEQUENCE = \\n|\\r|\\t|\\\"|\\\'
+ESCAPE_SEQUENCE = \\n|\\r|\\t|\\\"|\\\'|\\\\
 INVALID_ESCAPE = \\.
 
 %state STRING_DOUBLE_QUOTE
