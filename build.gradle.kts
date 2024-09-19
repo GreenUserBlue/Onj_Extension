@@ -1,39 +1,51 @@
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.6.20"
-    id("org.jetbrains.intellij") version "1.6.0"
+    id("org.jetbrains.kotlin.jvm") version "2.0.20"
+//    id("org.jetbrains.intellij") version "1.17.4"
+    id("org.jetbrains.intellij.platform") version "2.0.1"
 //    id("PsiViewer") version "222-SNAPSHOT"
 }
 
 group = "com.onj"
-version = "1.2"
+version = "1.3"
 
 repositories {
     mavenCentral()
+
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
 
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
-intellij {
-    version.set("2021.3")
-    type.set("IC") // Target IDE Platform
 
-    plugins.set(listOf(/* Plugin Dependencies */
-    ))
+dependencies {
+    intellijPlatform {
+        intellijIdeaCommunity("2024.2.1")
+        instrumentationTools()
+    }
 }
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_18
+}
+
 
 tasks {
     // Set the JVM compatibility versions
     withType<JavaCompile> {
-        sourceCompatibility = "11"
-        targetCompatibility = "11"
+        sourceCompatibility = "18"
+        targetCompatibility = "18"
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = "11"
+        kotlinOptions.jvmTarget = "18"
+//        exclude("**/*Reference.kt")
+//        exclude("**/*ReferenceContributor.kt")
     }
 
     patchPluginXml {
-        sinceBuild.set("213")
+        sinceBuild.set("220.*")
         untilBuild.set("242.*")
     }
 

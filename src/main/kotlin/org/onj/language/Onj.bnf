@@ -12,9 +12,7 @@
   elementTypeClass="org.onj.language.psi.OnjElementType"
   tokenTypeClass="org.onj.language.psi.OnjTokenType"
   psiImplUtilClass="org.onj.language.psi.impl.OnjPsiImplUtils"
-  mixin("variableStructure")="org.onj.language.psi.OnjVariableStructureMixin"
-  mixin("importStructure")="org.onj.language.psi.OnjImportStructureMixin"
-//  extends(".*expr")=expr
+
 }
 
 
@@ -23,8 +21,16 @@ OnjFile ::= ((objectEntry COMMA) | topLevelStructure)* objectEntry? topLevelStru
 topLevelStructure ::= importStructure | variableStructure | useStructure
 
 importStructure ::= IMPORT (string | literalExpression) asContextDependentKeyword variableDeclarationName SEMICOLON
-variableDeclarationName ::= IDENTIFIER
-variableStructure ::= VAR variableDeclarationName EQUALS expression SEMICOLON
+variableDeclarationName ::= IDENTIFIER {
+  mixin="org.onj.language.psi.impl.OnjNamedElementImpl"
+  implements="org.onj.language.psi.impl.OnjNamedElement"
+  methods=[getName setName getNameIdentifier getPresentation]
+}
+variableStructure ::= VAR variableDeclarationName EQUALS expression SEMICOLON {
+//  mixin="org.onj.language.psi.impl.OnjNamedElementImpl"
+//  implements=["org.onj.language.psi.impl.OnjNamedElement" "org.onj.language.psi.impl.OnjDocumentableElement"]
+//  methods=[getName setName getNameIdentifier getPresentation findDocumentationComment ]
+}
 useStructure ::= USE IDENTIFIER SEMICOLON
 
 asContextDependentKeyword ::= "as"
@@ -52,15 +58,32 @@ literalExpression ::=   functionCallExpression |
                         variableExpression |
                         string
 
-variableExpression ::= IDENTIFIER {methods=[getOwnReferences]}
+variableExpression ::= IDENTIFIER {
+  mixin="org.onj.language.psi.impl.OnjNamedElementImpl"
+implements="org.onj.language.psi.impl.OnjNamedElement"
+methods=[getName setName getNameIdentifier]
+}
 variableAccessor ::= IDENTIFIER | string
-functionCallExpression ::= functionName L_PAREN (expression COMMA)* expression? R_PAREN
-functionName ::= IDENTIFIER
+functionCallExpression ::= functionName L_PAREN (expression COMMA)* expression? R_PAREN{
+// implements="org.onj.language.psi.impl.OnjNamedElement"
+// methods=[getElementNameKomplex setName getNameIdentifier]
+}
+functionName ::= IDENTIFIER {
+//  implements="org.onj.language.psi.impl.OnjNamedElement"
+//  methods=[getName setName getNameIdentifier]
+
+}
 groupedExpression ::= L_PAREN expression R_PAREN
 
 object ::= L_BRACE (objectEntry COMMA)* objectEntry? R_BRACE
-namedObject ::= DOLLAR namedObjectName object
-namedObjectName ::= IDENTIFIER
+namedObject ::= DOLLAR namedObjectName object{
+//  implements="org.onj.language.psi.impl.OnjNamedElement"
+//  methods=[getElementNameKomplex setName getNameIdentifier]
+}
+namedObjectName ::= IDENTIFIER {
+//  implements="org.onj.language.psi.impl.OnjNamedElement"
+//  methods=[getName setName getNameIdentifier]
+}
 array ::= L_BRACKET (arrayEntry COMMA)* arrayEntry? R_BRACKET
 
 binaryOperator ::= PLUS | MINUS | STAR | DIV

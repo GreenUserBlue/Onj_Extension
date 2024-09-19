@@ -9,10 +9,6 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.util.elementType
 import org.onj.language.psi.OnjTypes
 import org.onj.language.psi.OnjVariableExpression
-import org.onj.language.psi.OnjVariableStructure
-import org.onj.language.psi.OnjVariableStructureMixin
-import org.onj.language.psi.impl.OnjImportStructureImpl
-import org.onj.language.psi.impl.OnjVariableStructureImpl
 
 class OnjVariableSymbolReference(
     private val referencingPsiElement: OnjVariableExpression
@@ -35,16 +31,16 @@ class OnjVariableSymbolReference(
                 variableElement.elementType != OnjTypes.IMPORT_STRUCTURE
             ) return@forEach
 
-            val name = variableElement.children.find { it.elementType == OnjTypes.VARIABLE_DECLARATION_NAME }!!
-
-            if (!name.textMatches(referencedVariable)) return@forEach
+//            val name = variableElement.children.find { it.elementType == OnjTypes.VARIABLE_DECLARATION_NAME }!!
+//
+//            if (!name.textMatches(referencedVariable)) return@forEach
 
             return mutableListOf(
-                if (variableElement is OnjVariableStructureImpl) {
-                    variableElement.symbolDeclaration.symbol
-                } else {
-                    (variableElement as OnjImportStructureImpl).symbolDeclaration.symbol
-                }
+//                if (variableElement is OnjVariableStructureImpl) {
+//                    variableElement.symbolDeclaration.symbol
+//                } else {
+//                    (variableElement as OnjImportStructureImpl).symbolDeclaration.symbol
+//                }
             )
         }
         return mutableListOf()

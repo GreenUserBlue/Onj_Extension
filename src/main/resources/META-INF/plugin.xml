@@ -35,8 +35,9 @@
     ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
+    <!--    <depends>com.intellij.java</depends>-->
 
-        <extensions defaultExtensionNs="com.intellij">
+    <extensions defaultExtensionNs="com.intellij">
         <fileType
                 name="Onj File"
                 implementationClass="org.onj.language.OnjFileType"
@@ -52,19 +53,32 @@
         <annotator
                 language="Onj"
                 implementationClass="org.onj.language.highlighting.OnjAnnotator"/>
+        <psi.referenceContributor
+                language="Onj"
+                implementation="org.onj.language.reference.OnjReferenceContributor"/>
+        <lang.findUsagesProvider
+                language="Onj"
+                implementationClass="org.onj.language.reference.OnjFindUsagesProvider"
+        />
+        <findUsagesHandlerFactory implementation="org.onj.language.reference.OnjFindUsagesHandlerFactory" />
+        <lang.foldingBuilder
+                language="Onj"
+                implementationClass="org.onj.language.OnjFoldingDescriptor"/>
+
+        <iconProvider implementation="org.onj.language.symbols.OnjIconProvider"/>
+
+        <gotoSymbolContributor
+                implementation="org.onj.language.symbols.OnjChooseByNameContributor"/> <!--This doesn't work-->
         <psi.declarationProvider
                 implementation="org.onj.language.symbols.OnjSymbolDeclarationProvider"/>
-        <lang.formatter
-            language="Onj"
-            implementationClass="org.onj.language.formatter.OnjFormattingModelBuilder"/>
-        <lang.braceMatcher
-            language="Onj"
-            implementationClass="org.onj.language.OnjPairedBracesMatcher"/>
-        <lang.foldingBuilder
-            language="Onj"
-            implementationClass="org.onj.language.OnjFoldingDescriptor"/>
-        <lang.commenter
-            language="Onj"
-            implementationClass="org.onj.language.OnjCommenter"/>
+                <lang.formatter
+                    language="Onj"
+                    implementationClass="org.onj.language.formatter.OnjFormattingModelBuilder"/>
+                <lang.braceMatcher
+                    language="Onj"
+                    implementationClass="org.onj.language.OnjPairedBracesMatcher"/>
+                <lang.commenter
+                        language="Onj"
+                        implementationClass="org.onj.language.OnjCommenter"/>
     </extensions>
 </idea-plugin>

@@ -1,7 +1,7 @@
 # ONJ Extension
 
 ## General
-This is a Plugin to add support for the onj language.
+This is a Plugin to add support for the [onj](https://github.com/blueUserRed/Onj) language.
 
 Features:
 <ul>
@@ -22,9 +22,9 @@ Limitations:
 
 ## Project Setup
 
-- Go to [Onj.bnf](main/kotlin/org/onj/language/Onj.bnf)
+- Go to [Onj.bnf](src/main/kotlin/org/onj/language/Onj.bnf)
 - Press Strg+Shift+G or right click the File and execute "Generate Parser Code"
 <br><br>
-- Go to [Onj.bnf](main/kotlin/org/onj/language/onj.flex)
+- Go to [Onj.bnf](src/main/kotlin/org/onj/language/onj.flex)
 - Press Strg+Shift+G or right click the File and execute "Run JFlex Generator"
   - maybe you need to install jflex first, just select a the project folder
